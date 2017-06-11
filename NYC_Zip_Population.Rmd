@@ -22,12 +22,11 @@ nycLat <- -73.99633
 nycLng <- 40.75042
 m = dem_with_zip %>% leaflet() %>% addTiles() %>% setView(nycLat,nycLng, zoom = 10)
 
-m <- m %>% addCircleMarkers(radius = ~sqrt(COUNT.MALE),
-                       lng = ~longitude, 
+
+pal <- colorFactor(c("pink", "blue"), domain = c("female", "male"))
+m <- m %>% addMarkers( lng = ~longitude, 
                        lat = ~latitude,
-                       stroke = FALSE, 
-                       fillOpacity = 0.5,
-                       popup = ~as.character(COUNT.MALE),
+                       label = ~paste("Population:",as.character(COUNT.GENDER.TOTAL)),
                        clusterOptions = markerClusterOptions()
 )
 m
