@@ -26,7 +26,7 @@ m = dem_with_zip %>% leaflet() %>% addTiles() %>% setView(nycLat,nycLng, zoom = 
 pal <- colorFactor(c("pink", "blue"), domain = c("female", "male"))
 m <- m %>% addMarkers( lng = ~longitude, 
                        lat = ~latitude,
-                       label = ~paste("Population:",as.character(COUNT.GENDER.TOTAL)),
+                       label = ~as.character(COUNT.GENDER.TOTAL),
                        clusterOptions = markerClusterOptions()
 )
 m
