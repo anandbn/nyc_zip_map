@@ -1,0 +1,35 @@
+---
+title: "NYC Zipcode Population"
+author: "Anand Narasimhan"
+date: "6/10/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE,message=FALSE}
+library(dplyr)
+library(leaflet)
+
+dem <- read.csv("Demographic_Statistics_By_Zip_Code.csv")
+zipcode <- read.csv("zip_codes_states.csv")
+dem_with_zip <- inner_join(dem,zipcode)
+dem_with_zip$majority_gender <- ifelse(dem_with_zip$COUNT.FEMALE>dem_with_zip$COUNT.MALE,"female","male")
+
+nycLat <- -73.99633
+nycLng <- 40.75042
+m = dem_with_zip %>% leaflet() %>% addTiles() %>% setView(nycLat,nycLng, zoom = 10)
+
+m <- m %>% addCircleMarkers(radius = ~sqrt(COUNT.MALE),
+                       lng = ~longitude, 
+                       lat = ~latitude,
+                       stroke = FALSE, 
+                       fillOpacity = 0.5,
+                       popup = ~as.character(COUNT.MALE),
+                       clusterOptions = markerClusterOptions()
+)
+m
+```
+
